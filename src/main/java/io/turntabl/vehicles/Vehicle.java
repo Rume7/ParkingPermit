@@ -2,27 +2,26 @@ package io.turntabl.vehicles;
 
 import io.turntabl.owner.Person;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public abstract class Vehicle {
 
-    private String licencePlate;
+    private final String licencePlate;
     protected String parkingPermitNumber;
     private final VehicleType type;
-    protected float monthlyBaseCharge;
-    private List<Person> ownersList;
+    protected double monthlyBaseCharge;
+    private Set<Person> personSet;
 
     public Vehicle(String licencePlate, VehicleType type) {
         this.licencePlate = licencePlate;
         this.type = type;
+        this.personSet = new HashSet<>();
     }
 
     public String getLicencePlate() {
         return licencePlate;
-    }
-
-    public void setLicencePlate(String licencePlate) {
-        this.licencePlate = licencePlate;
     }
 
     public String getParkingPermitNumber() {
@@ -33,26 +32,35 @@ public abstract class Vehicle {
         return type;
     }
 
-    public void setMonthlyBaseCharge(float monthlyBaseCharge) {
-        this.monthlyBaseCharge = monthlyBaseCharge;
-    }
-
     public void setParkingPermitNumber(String parkingPermitNumber) {
         this.parkingPermitNumber = parkingPermitNumber;
     }
 
-    public abstract float getTotalMonthlyCharge();
+    public abstract double getTotalMonthlyCharge();
 
-    public float getMonthlyBaseCharge() {
+    public double getMonthlyBaseCharge() {
         return monthlyBaseCharge;
     }
 
-    public List<Person> getOwnersList() {
-        return ownersList;
+    public Set<Person> getAllOwners() {
+        return personSet;
     }
 
-    public void setOwnersList(List<Person> ownersList) {
-        this.ownersList = ownersList;
+    public void setOwnersSet(Set<Person> ownersList) {
+        this.personSet = ownersList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicle vehicle = (Vehicle) o;
+        return licencePlate.equals(vehicle.licencePlate) && type == vehicle.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(licencePlate, type);
     }
 
     @Override
