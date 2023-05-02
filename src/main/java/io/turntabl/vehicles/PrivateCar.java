@@ -4,6 +4,7 @@ public class PrivateCar extends Vehicle {
 
     public PrivateCar(String licencePlate) {
         super(licencePlate, VehicleType.PRIVATE_CAR);
+        this.monthlyBaseCharge = 20;
     }
 
     @Override
@@ -12,7 +13,7 @@ public class PrivateCar extends Vehicle {
     }
 
     @Override
-    public float getTotalMonthlyCharge() {
+    public double getTotalMonthlyCharge() {
         return monthlyBaseCharge;
     }
 
