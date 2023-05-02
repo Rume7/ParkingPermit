@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,12 +20,12 @@ class TownCouncilTest {
     void setUp() {
         townCouncil = new TownCouncil();
         privateVehicle = new PrivateCar("AA2323");
-        List<Person> privateCarOwners = List.of(
+        Set<Person> privateCarOwners = Set.of(
                 new Person(true, "OWN1"),
                 new Person(true, "OWN2"),
                 new Person(true, "OWN3")
                 );
-        privateVehicle.setOwnersList(privateCarOwners);
+        privateVehicle.setOwnersSet(privateCarOwners);
     }
 
     @Test
