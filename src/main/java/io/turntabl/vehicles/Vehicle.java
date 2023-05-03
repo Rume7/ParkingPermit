@@ -12,7 +12,7 @@ public abstract class Vehicle {
     protected String parkingPermitNumber;
     private final VehicleType type;
     protected double monthlyBaseCharge;
-    private Set<Person> personSet;
+    private final Set<Person> personSet;
 
     public Vehicle(String licencePlate, VehicleType type) {
         this.licencePlate = licencePlate;
@@ -46,8 +46,8 @@ public abstract class Vehicle {
         return personSet;
     }
 
-    public void setOwnersSet(Set<Person> ownersList) {
-        this.personSet = ownersList;
+    public void setOwnersSet(Set<Person> owners) {
+        personSet.addAll(owners);
     }
 
     @Override
