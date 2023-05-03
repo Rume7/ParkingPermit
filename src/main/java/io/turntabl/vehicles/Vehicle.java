@@ -36,6 +36,7 @@ public abstract class Vehicle {
         this.parkingPermitNumber = parkingPermitNumber;
     }
 
+
     public abstract double getTotalMonthlyCharge();
 
     public double getMonthlyBaseCharge() {
