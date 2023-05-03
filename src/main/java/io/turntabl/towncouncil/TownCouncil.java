@@ -7,13 +7,11 @@ import io.turntabl.vehicles.Vehicle;
 import io.turntabl.vehicles.VehicleType;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class TownCouncil {
 
-    private List<Person> registeredOwners;
     private final Map<VehicleType, Integer> vehiclesWithPermitMapCount;
     private static int count = 1;
 
@@ -31,29 +29,12 @@ public class TownCouncil {
     }
 
     private static String generatePermitNumber() {
-        String permitNumber = "VehiclePermit"+count;
+        String permitNumber = "TruckPermit00"+count;
         count++;
         return permitNumber;
     }
 
     // give permit to owners by issuing permit numbers.
-    public void issueVehiclePermit(Vehicle vehicle) {
-        Set<Person> owners = vehicle.getAllOwners();
-        for (Person owner : owners) {
-            if (owner.isRegistered()) {
-                vehicle.setParkingPermitNumber(generatePermitNumber());
-                setVehiclesWithPermitMapCount(vehicle);
-                return ;
-            }
-        }
-    }
-
-    public boolean issueVehiclePermit1(Vehicle vehicle, Person permitRequestor) {
-        vehicle.setParkingPermitNumber(generatePermitNumber());
-        setVehiclesWithPermitMapCount(vehicle);
-        return true;
-    }
-
     public String issueTruckPermit(Vehicle vehicle, Person permitRequestor) {
         String permitNumber = generatePermitNumber();
         vehicle.setParkingPermitNumber(permitNumber);
