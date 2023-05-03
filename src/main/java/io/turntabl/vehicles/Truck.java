@@ -1,5 +1,7 @@
 package io.turntabl.vehicles;
 
+import java.util.Objects;
+
 public class Truck extends Vehicle {
 
     private static final double BASE_CAPACITY_IN_KG = 150;
@@ -24,6 +26,20 @@ public class Truck extends Vehicle {
 
     public double getTruckCapacityInKg() {
         return truckCapacityInKg;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Truck truck = (Truck) o;
+        return Double.compare(truck.truckCapacityInKg, truckCapacityInKg) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), truckCapacityInKg);
     }
 
     @Override
