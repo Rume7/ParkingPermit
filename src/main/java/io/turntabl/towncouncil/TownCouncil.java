@@ -1,52 +1,56 @@
 package io.turntabl.towncouncil;
 
 import io.turntabl.owner.Person;
+import io.turntabl.services.PermitIssuerService;
+import io.turntabl.services.VerificationService;
 import io.turntabl.vehicles.Vehicle;
 import io.turntabl.vehicles.VehicleType;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class TownCouncil {
 
-    private List<Person> registeredOwners;
-    private Map<VehicleType, Integer> vehiclesWithPermitMapCount;
+    private final Map<VehicleType, Integer> vehiclesWithPermitMapCount;
     private static int count = 1;
+
+    private VerificationService verificationService;
+    private PermitIssuerService permitIssuerService;
 
     public TownCouncil() {
         this.vehiclesWithPermitMapCount = new HashMap<>();
     }
 
+    public TownCouncil(VerificationService verificationService, PermitIssuerService permitIssuerService) {
+        this.vehiclesWithPermitMapCount = new HashMap<>();
+        this.verificationService = verificationService;
+        this.permitIssuerService = permitIssuerService;
+    }
+
     private static String generatePermitNumber() {
-        String permitNumber = "VehiclePermit"+count;
+        String permitNumber = "TruckPermit00"+count;
         count++;
         return permitNumber;
     }
 
     // give permit to owners by issuing permit numbers.
-    public void issueVehiclePermit(Vehicle vehicle) {
-        List<Person> owners = vehicle.getOwnersList();
-        for (Person owner : owners) {
-            if (owner.isRegistered()) {
-                vehicle.setParkingPermitNumber(generatePermitNumber());
-                setVehiclesWithPermitMapCount(vehicle);
-                return ;
-            }
-        }
+    public String issueTruckPermit(Vehicle vehicle, Person permitRequestor) {
+        String permitNumber = generatePermitNumber();
+        vehicle.setParkingPermitNumber(permitNumber);
+        setVehiclesWithPermitMapCount(vehicle);
+        return permitNumber;
     }
 
-    public boolean issueVehiclePermit(Vehicle vehicle, Person permitRequestor) {
-        if (permitRequestor.isRegistered()) {
-            return false;
+    public String issueVehiclePermit(Vehicle vehicle, Person permitRequestor) {
+        if (!verificationService.verifyPerson(permitRequestor, vehicle)) {
+            return "You are not a vehicle owner";
+        } else {
+            if (vehicle.getType() != VehicleType.TRUCK) {
+                return permitIssuerService.issuePermit(vehicle);
+            }
+            return issueTruckPermit(vehicle, permitRequestor);
         }
-        List<Person> ownersList = vehicle.getOwnersList();
-        if (!ownersList.contains(permitRequestor)) {
-            return false;
-        }
-        vehicle.setParkingPermitNumber(generatePermitNumber());
-        setVehiclesWithPermitMapCount(vehicle);
-        return true;
     }
 
     /** Display the number of vehicles types. */
