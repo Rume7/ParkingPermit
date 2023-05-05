@@ -28,24 +28,30 @@ public class TownCouncil {
         this.permitIssuerService = permitIssuerService;
     }
 
-    private static String generatePermitNumber() {
-        String permitNumber = "TruckPermit00"+count;
-        count++;
+    private static String generateTruckPermitNumber() {
+        String permitNumber = "TruckPermit00" + count++;
         return permitNumber;
     }
 
     // give permit to owners by issuing permit numbers.
-    public String issueTruckPermit(Vehicle vehicle, Person permitRequestor) {
-        String permitNumber = generatePermitNumber();
+    private String issueTruckPermit(Vehicle vehicle, Person permitRequestor) {
+        String permitNumber = generateTruckPermitNumber();
         vehicle.setParkingPermitNumber(permitNumber);
         setVehiclesWithPermitMapCount(vehicle);
         return permitNumber;
     }
 
     public String issueVehiclePermit(Vehicle vehicle, Person permitRequestor) {
+        if (vehicle == null || permitRequestor == null) {
+            throw new NullPointerException("No requester nor vehicle was passed.");
+        }
         if (!verificationService.verifyPerson(permitRequestor, vehicle)) {
             return "You are not a vehicle owner";
         } else {
+            String permitNumber = vehicle.getParkingPermitNumber();
+            if (permitNumber != null && !permitNumber.isEmpty()) {
+                return "Permit already exit";
+            }
             if (vehicle.getType() != VehicleType.TRUCK) {
                 return permitIssuerService.issuePermit(vehicle);
             }

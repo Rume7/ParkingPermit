@@ -120,6 +120,20 @@ class TownCouncilTest {
     }
 
     @Test
+    void testPermitAlreadyGiven() {
+        TownCouncil council1 = new TownCouncil(verificationServiceMock, permitIssuerServiceMock);
+        Person personGuy5 = new Person(true, "PC212");
+        Person personGuy6 = new Person(true, "PC225");
+        Vehicle car = new PrivateCar("PC212");
+        car.setOwnersSet(Set.of (personGuy5, personGuy6));
+        car.setParkingPermitNumber("PC23240");
+
+        when(verificationServiceMock.verifyPerson(personGuy5, car)).thenReturn(true);
+
+        assertEquals(council1.issueVehiclePermit(car, personGuy5), "Permit already exit");
+    }
+
+    @Test
     void getVehiclesWithPermitMapCount() {
 
     }
